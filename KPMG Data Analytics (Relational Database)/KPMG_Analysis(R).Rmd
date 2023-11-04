@@ -1,0 +1,93 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+## KPMG Data Analytics using python.
+
+### The Sporty Rocket Central Dataset
+
+Developing a report that we can present to the client at our next meeting. Displaying the data summary and results of the analysis (see tools/references for assistance). Specifically, the presentation should specify who Sprocket Central Pty Ltd' should be targeting out of the new 1000 customer list using the Transactions Table. **Problem Outline** SP Rockect Central is a company that specializes in high quality bikes and accessories. the Company is targeting 1000 new customers and is focused in Maximizing profit through Bike sales.
+
+```{r}
+pacman::p_load(pacman, dplyr, GGally, ggplot2, ggthemes, 
+               ggvis, httr, lubridate, plotly, rio, rmarkdown, shiny, 
+               stringr, tidyr, reticulate, tidyverse, psych)
+```
+
+```{r}
+TransactionsTable <- read_csv("C:/Users/user/Projects/BI-Analytics-Projects/KPMG Data Analytics (Relational Database)/TransactionsTable.csv")
+kpmg <- TransactionsTable
+```
+
+```{r}
+kpmg
+```
+
+```{r}
+str(kpmg)
+```
+
+```{r}
+summary(kpmg)
+```
+
+```{r}
+colSums(is.na(kpmg))
+```
+
+```{r}
+kpmg <- subset(kpmg,select = -c(address))
+colSums(is.na(kpmg))
+```
+
+```{r}
+summary(kpmg$AGE)
+```
+
+```{r}
+kpmg <- kpmg |> mutate(AgeGroup = cut(AGE, breaks = 15))
+kpmg |> count(AgeGroup)
+```
+
+```{r}
+colnames(kpmg)
+```
+
+```{r}
+ggplot(kpmg, aes(x=gender,fill=gender)) + geom_bar()
+```
+
+```{r}
+ggplot(kpmg, aes(x=brand,fill=gender)) + geom_bar(position = 'dodge')
+```
+
+```{r}
+ggplot(kpmg, aes(y=AgeGroup,fill=AgeGroup)) + geom_bar()
+```
+
+```{r}
+ggplot(kpmg, aes(y=AgeGroup,x=sum(Profit), fill=gender)) + geom_col()
+```
+
+```{r}
+ggplot(kpmg, aes(y=AgeGroup,x=past_3_years_bike_related_purchases)) + geom_col()
+```
+
+```{r}
+ggplot(kpmg, aes(x=owns_car,y=Profit, fill=owns_car)) + geom_col()
+```
+
+```{r}
+ggplot(kpmg, aes(y=job_industry_category,x=Profit, fill=owns_car)) + geom_col()
+```
+
+```{r}
+ggplot(kpmg, aes(x=state, y=customer_id)) + geom_col()
+```
+
+```{r}
+kpmg |> count(gender)
+```
+
+**DATA EXPLORATION** + Most of the Bike related Purchases were made by the age 40 and 49 + The Data shows that middle aged customers are the most potential Customers + Finalcial Services, Health and Manufacturing Sector are the top Three Profit Generating industries, followed by Retail, IT and Property
